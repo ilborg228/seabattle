@@ -1,5 +1,5 @@
-.idea
 .node_modules
-
-
-seabattle.iml
+.idea
+*.iws
+*.iml
+*.ipr
