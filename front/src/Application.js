@@ -1,27 +1,27 @@
 class Application {
     mouse = null
+
     player = null
     opponent = null
-    activeScene = null
 
     scenes = {}
+    activeScene = null
 
     constructor(scenes = {}) {
-        console.log(scenes)
         const mouse = new Mouse(document.body)
         const player = new BattlefieldView()
         const opponent = new BattlefieldView()
 
-        Object.assign(this, {mouse, player, opponent})
+        Object.assign(this, { mouse, player, opponent })
 
         document.querySelector('[data-side="player"]').append(player.root)
         document.querySelector('[data-side="opponent"]').append(opponent.root)
 
-        for (const [sceneName, sceneClass] of Object.entries(scenes)) {
-            this.scenes[sceneName] = new sceneClass(sceneName, this)
+        for (const [sceneName, SceneClass] of Object.entries(scenes)) {
+            this.scenes[sceneName] = new SceneClass(sceneName, this)
         }
 
-        for (const scene of Object.values(this.scenes)){
+        for (const scene of Object.values(this.scenes)) {
             scene.init()
         }
 
@@ -47,13 +47,13 @@ class Application {
             return false
         }
 
-        if (this.activeScene){
+        if (this.activeScene) {
             this.activeScene.stop()
         }
 
         const scene = this.scenes[sceneName]
-        scene.start()
         this.activeScene = scene
+        scene.start()
 
         return true
     }

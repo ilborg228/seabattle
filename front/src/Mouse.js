@@ -27,24 +27,24 @@ class Mouse {
         }
 
         element.addEventListener('mousemove', (e) => {
-            e.tick()
+            this.tick()
             update(e)
         })
 
         element.addEventListener('mouseenter', (e) => {
-            e.tick()
+            this.tick()
             update(e)
         })
 
         element.addEventListener('mouseleave', (e) => {
-            e.tick()
+            this.tick()
             update(e)
 
             this.under = false
         })
 
         element.addEventListener('mousedown', (e) => {
-            e.tick()
+            this.tick()
             update(e)
 
             if (e.button === 0) {
@@ -53,7 +53,7 @@ class Mouse {
         })
 
         element.addEventListener('mouseup', (e) => {
-            e.tick()
+            this.tick()
             update(e)
 
             if (e.button === 0) {
@@ -62,7 +62,7 @@ class Mouse {
         })
 
         element.addEventListener('wheel', (e) => {
-            e.tick()
+            this.tick()
             update(e)
 
             this.x = e.clientX;
@@ -78,5 +78,7 @@ class Mouse {
         this.prevUnder = this.under
         this.prevLeft = this.left
         this.prevDelta = this.delta
+        console.log(this.prevY)
+        console.log(this.prevX)
     }
 }
