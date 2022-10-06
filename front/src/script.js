@@ -1,1 +1,5 @@
-console.log("123")
+const app = new Application({
+    preparation: PreparationScene
+})
+
+app.start("preparation")
