@@ -78,7 +78,5 @@ class Mouse {
         this.prevUnder = this.under
         this.prevLeft = this.left
         this.prevDelta = this.delta
-        console.log(this.prevY)
-        console.log(this.prevX)
     }
 }

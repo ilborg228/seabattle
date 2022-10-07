@@ -1,11 +1,11 @@
 class Scene {
     name = null
-    scene = null
+    app = null
 
 
-    constructor(name, scene) {
+    constructor(name, app) {
         this.name = name;
-        this.scene = scene;
+        this.app = app;
     }
 
     init() {}
