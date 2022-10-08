@@ -82,7 +82,7 @@ class BattlefieldView extends Battlefield {
 
         } else {
             ship.div.style.left = `${ship.startX}px`
-            ship.div.style.top = `${ship.startY}px`
+            ship.div.style.top = `${ship.startY }px`
         }
 
         return true
