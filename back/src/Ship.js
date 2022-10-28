@@ -1,4 +1,4 @@
-class Ship {
+module.exports = class Ship {
 	size = null;
 	direction = null;
 	killed = false;
@@ -14,4 +14,4 @@ class Ship {
 		this.size = size;
 		this.direction = direction;
 	}
-}
+};

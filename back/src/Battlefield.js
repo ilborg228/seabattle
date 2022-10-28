@@ -1,4 +1,4 @@
-class Battlefield {
+module.exports = class Battlefield {
 	ships = [];
 	shots = [];
 
@@ -269,4 +269,4 @@ class Battlefield {
 		this.removeAllShots();
 		this.removeAllShips();
 	}
-}
+};

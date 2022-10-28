@@ -1,60 +1,84 @@
 class Application {
-    mouse = null
+	socket = null;
+	mouse = null;
 
-    player = null
-    opponent = null
+	player = null;
+	opponent = null;
 
-    scenes = {}
-    activeScene = null
+	scenes = {};
+	activeScene = null;
 
-    constructor(scenes = {}) {
-        const mouse = new Mouse(document.body)
-        const player = new BattlefieldView()
-        const opponent = new BattlefieldView()
+	constructor(scenes = {}) {
+		const mouse = new Mouse(document.body);
 
-        Object.assign(this, { mouse, player, opponent })
+		const player = new BattlefieldView(true);
+		const opponent = new BattlefieldView(false);
 
-        document.querySelector('[data-side="player"]').append(player.root)
-        document.querySelector('[data-side="opponent"]').append(opponent.root)
+		const socket = io();
 
-        for (const [sceneName, SceneClass] of Object.entries(scenes)) {
-            this.scenes[sceneName] = new SceneClass(sceneName, this)
-        }
+		Object.assign(this, { mouse, player, opponent, socket });
 
-        for (const scene of Object.values(this.scenes)) {
-            scene.init()
-        }
+		document.querySelector('[data-side="player"]').append(player.root);
+		document.querySelector('[data-side="opponent"]').append(opponent.root);
 
-        requestAnimationFrame(() => this.tick())
-    }
+		for (const [sceneName, SceneClass] of Object.entries(scenes)) {
+			this.scenes[sceneName] = new SceneClass(sceneName, this);
+		}
 
-    tick() {
-        requestAnimationFrame(() => this.tick())
+		for (const scene of Object.values(this.scenes)) {
+			scene.init();
+		}
 
-        if (this.activeScene) {
-            this.activeScene.update()
-        }
+		socket.on("playerCount", (n) => {
+			document.querySelector("[data-playersCount]").textContent = n;
+		});
 
-        this.mouse.tick()
-    }
+		socket.on("doubleConnection", () => {
+			alert("Socket соединение закрыто из-за подключения в другой вкладке.");
+			document.body.classList.add("hidden");
+		});
 
-    start(sceneName) {
-        if (this.activeScene && this.activeScene.name === sceneName) {
-            return false
-        }
+		socket.on("reconnection", (ships) => {
+			player.clear();
 
-        if (!this.scenes.hasOwnProperty(sceneName)) {
-            return false
-        }
+			for (const { size, direction, x, y } of ships) {
+				const ship = new ShipView(size, direction);
+				player.addShip(ship, x, y);
+			}
 
-        if (this.activeScene) {
-            this.activeScene.stop()
-        }
+			this.start("online");
+		});
 
-        const scene = this.scenes[sceneName]
-        this.activeScene = scene
-        scene.start()
+		requestAnimationFrame(() => this.tick());
+	}
 
-        return true
-    }
+	tick() {
+		requestAnimationFrame(() => this.tick());
+
+		if (this.activeScene) {
+			this.activeScene.update();
+		}
+
+		this.mouse.tick();
+	}
+
+	start(sceneName, ...args) {
+		if (this.activeScene && this.activeScene.name === sceneName) {
+			return false;
+		}
+
+		if (!this.scenes.hasOwnProperty(sceneName)) {
+			return false;
+		}
+
+		if (this.activeScene) {
+			this.activeScene.stop();
+		}
+
+		const scene = this.scenes[sceneName];
+		this.activeScene = scene;
+		scene.start(...args);
+
+		return true;
+	}
 }

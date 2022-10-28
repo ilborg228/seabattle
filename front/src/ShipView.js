@@ -1,39 +1,38 @@
 class ShipView extends Ship {
+	div = null;
 
-    div = null
+	startX = null;
+	startY = null;
 
-    startX = null
-    startY = null
+	constructor(size, direction, startX, startY) {
+		super(size, direction);
 
-    constructor(size, direction, startX, startY) {
-        super(size, direction)
+		const div = document.createElement("div");
+		div.classList.add("ship");
 
-        const div = document.createElement("div");
-        div.classList.add("ship")
+		Object.assign(this, { div, startX, startY });
 
-        Object.assign(this, {div, startX, startY})
+		this.setDirection(direction, true);
+	}
 
-        this.setDirection(direction, true)
-    }
+	setDirection(newDirection, force = false) {
+		if (!force && this.direction === newDirection) {
+			return false;
+		}
 
-    setDirection(direction, force = false) {
-        if (!force && this.direction === direction) {
-            return false;
-        }
+		this.div.classList.remove(`ship-${this.direction}-${this.size}`);
+		this.direction = newDirection;
+		this.div.classList.add(`ship-${this.direction}-${this.size}`);
 
-        this.div.classList.remove(`ship-${this.direction}-${this.size}`);
-        this.direction = direction;
-        this.div.classList.add(`ship-${this.direction}-${this.size}`);
+		return true;
+	}
 
-        return true;
-    }
+	toggleDirection() {
+		const newDirection = this.direction === "row" ? "column" : "row";
+		this.setDirection(newDirection);
+	}
 
-    toggleDirection() {
-        const newDirection = this.direction === "row" ? "column" : "row";
-        this.setDirection(newDirection);
-    }
-
-    isUnder(point) {
-        return isUnderPoint(point, this.div);
-    }
+	isUnder(point) {
+		return isUnderPoint(point, this.div);
+	}
 }
