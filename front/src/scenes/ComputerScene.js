@@ -115,7 +115,7 @@ class ComputerScene extends Scene {
 				const result = player.addShot(shot);
 
 				if (result) {
-					this.playerTurn = shot.variant === "miss" ? true : false;
+					this.playerTurn = shot.variant === "miss";
 				}
 			}
 		}

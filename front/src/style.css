@@ -91,36 +91,50 @@ body {
 	background: rgba(0, 55, 255, 0.45);
 	width: 32px;
 	height: 32px;
+	font-size: 0;
+}
+
+.deck {
+	width: 32px;
+	height: 32px;
+}
+
+.rotated {
+	transform: rotate(90deg);
+}
+
+img {
+	pointer-events: none;
 }
 
 .ship-row-1 {
 }
 
 .ship-row-2 {
-	width: 65px;
+	width: 64px;
 }
 
 .ship-row-3 {
-	width: 98px;
+	width: 96px;
 }
 
 .ship-row-4 {
-	width: 131px;
+	width: 128px;
 }
 
 .ship-column-1 {
 }
 
 .ship-column-2 {
-	height: 65px;
+	height: 64px;
 }
 
 .ship-column-3 {
-	height: 98px;
+	height: 96px;
 }
 
 .ship-column-4 {
-	height: 131px;
+	height: 128px;
 }
 
 .app-actions {
