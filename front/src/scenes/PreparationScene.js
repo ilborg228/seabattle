@@ -41,9 +41,7 @@ class PreparationScene extends Scene {
 
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
-		const simpleButton = document.querySelector('[data-computer="simple"]');
-		const middleButton = document.querySelector('[data-computer="middle"]');
-		const hardButton = document.querySelector('[data-computer="hard"]');
+		const aiButton = document.querySelector('[data-computer="AI"]');
 		const randomButton = document.querySelector('[data-type="random"]');
 		const challengeButton = document.querySelector('[data-type="challenge"]');
 		const takeChallengeButton = document.querySelector(
@@ -59,16 +57,8 @@ class PreparationScene extends Scene {
 		);
 
 		this.removeEventListeners.push(
-			addListener(simpleButton, "click", () => this.startComputer("simple"))
-		);
-
-		this.removeEventListeners.push(
-			addListener(middleButton, "click", () => this.startComputer("middle"))
-		);
-
-		this.removeEventListeners.push(
-			addListener(hardButton, "click", () => this.startComputer("hard"))
-		);
+			addListener(aiButton, "click", () => this.startComputerByValue())
+		)
 
 		this.removeEventListeners.push(
 			addListener(randomButton, "click", () =>
@@ -162,17 +152,13 @@ class PreparationScene extends Scene {
 		}
 
 		if (player.complete) {
-			document.querySelector('[data-computer="simple"]').disabled = false;
-			document.querySelector('[data-computer="middle"]').disabled = false;
-			document.querySelector('[data-computer="hard"]').disabled = false;
+			document.querySelector('[data-computer="AI"]').disabled = false;
+
 			document.querySelector('[data-type="random"]').disabled = false;
 			document.querySelector('[data-type="challenge"]').disabled = false;
 			document.querySelector('[data-type="takeChallenge"]').disabled = false;
 		} else {
-			document.querySelector('[data-computer="simple"]').disabled = true;
-			document.querySelector('[data-computer="middle"]').disabled = true;
-			document.querySelector('[data-computer="hard"]').disabled = true;
-			document.querySelector('[data-type="random"]').disabled = true;
+			document.querySelector('[data-computer="AI"]').disabled = true;
 			document.querySelector('[data-type="challenge"]').disabled = true;
 			document.querySelector('[data-type="takeChallenge"]').disabled = true;
 		}
@@ -202,18 +188,46 @@ class PreparationScene extends Scene {
 		}
 	}
 
+	startComputerByValue() { //в зависимости от выбора radio выбираем сложность
+		var radios = document.getElementsByName('difficult-level');
+		let val ="";
+		for (var i = 0, length = radios.length; i < length; i++) {
+			if (radios[i].checked) {
+				val = radios[i].value;
+				break;
+				}
+		}	
+		switch (val) {
+			case "2":
+				this.startComputer("middle");
+				break;
+			
+			case "3":
+				this.startComputer("hard");
+				break;
+
+			default:
+				this.startComputer("simple");
+				break;
+		}
+	}
+
 	startComputer(level) {
-		const matrix = this.app.player.matrix;
-		const withoutShipItems = matrix.flat().filter((item) => !item.ship);
-		let untouchables = [];
+		let firstCells = [];
+		let smartAttack = true;
 
 		if (level === "simple") {
-		} else if (level === "middle") {
-			untouchables = getRandomSeveral(withoutShipItems, 20);
+			smartAttack = false;
 		} else if (level === "hard") {
-			untouchables = getRandomSeveral(withoutShipItems, 40);
+			for (let y = 0; y < 10; y++) {
+				for (let x = 0; x < 10; x++) {
+					if (x === y || x === 9 - y) {
+						firstCells.push({ x, y });
+					}
+				}
+			}
 		}
 
-		this.app.start("computer", untouchables);
+		this.app.start("computer", firstCells, smartAttack);
 	}
 }

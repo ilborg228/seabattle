@@ -20,11 +20,16 @@ body {
 }
 
 .app-body {
-	margin-top: 50px;
-	margin-bottom: 50px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+
+.radio-body {
+	margin-top: 1px;
+	margin-bottom: 10px;
 }
 
 .app-subtitle {
@@ -146,8 +151,9 @@ img {
 
 .app-action {
 	width: 210px;
-	padding: 10px;
-	margin-bottom: 10px;
+	height: 30px;
+	padding: 5px;
+	margin-bottom: 5px;
 }
 
 .shot {
