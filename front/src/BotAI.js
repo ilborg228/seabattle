@@ -11,8 +11,8 @@ class BotAI {
     }
 
     checkAroundByDir() { //обстрел соседних клеток по направлению
-        var nx = this.runningCell.getX();
-        var ny = this.runningCell.getY();
+        let nx = this.runningCell.x;
+        let ny = this.runningCell.y;
         if (this.dir === "right") {
             if (!this.checkCell(nx + 1, ny)) {
                 nx++;
@@ -46,8 +46,8 @@ class BotAI {
     }
 
     checkAround() { //поиск направления (как и пред. функция, но направление мы не знаем)
-        var nx = this.runningCell.getX();
-        var ny = this.runningCell.getY();
+        let nx = this.runningCell.x;
+        let ny = this.runningCell.y;
         let changed = false;
         if (!this.checkCell(nx + 1, ny)) {
             nx++;
@@ -108,17 +108,17 @@ class BotAI {
                 } else {
                     this.runningCell = this.getRandomCell();
                 }
-            } while (this.checkCell(this.runningCell.getX(), this.runningCell.getY()) || 
-                    this.isKilledShipsNear(this.runningCell.getX(), this.runningCell.getY())); //добыча координат для атаки
+            } while (this.checkCell(this.runningCell.x, this.runningCell.y) ||
+                    this.isKilledShipsNear(this.runningCell.x, this.runningCell.y)); //добыча координат для атаки
             
             this.addShot(this.runningCell);
 
-            if (!this.field.checkShip(this.runningCell.getX(), this.runningCell.getY())) { //клетка пуста
+            if (!this.field.checkShip(this.runningCell.x, this.runningCell.y)) { //клетка пуста
                 this.shipCell = null; //все по нулям на всякий
                 this.dir = null;
                 return false; //промазал, выход из функции
             } else { //на клетке корабль
-                if (this.field.checkShipIsKilled(this.runningCell.getX(), this.runningCell.getY())) {
+                if (this.field.checkShipIsKilled(this.runningCell.x, this.runningCell.y)) {
                     this.shipCell = null;
                     this.dir = null;
                     return true; //если вдруг по однопалубному попали
@@ -146,7 +146,7 @@ class BotAI {
     }
 
     addShot(cell) { //добавить попадание на поле
-        const shot = new ShotView(cell.getX(), cell.getY());
+        const shot = new ShotView(cell.x, cell.y);
 		this.field.addShot(shot);
     }
 
@@ -167,19 +167,6 @@ class FieldCell { //а это я из джавы взял, мб без него 
     y = null; 
 
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    getX() {
-        return this.x;
-    }
-    
-    getY() {
-        return this.y;
-    }
-
-    setCords(x, y) {
         this.x = x;
         this.y = y;
     }
