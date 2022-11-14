@@ -65,19 +65,6 @@ class PreparationScene extends Scene {
 				this.app.start("online", "random")
 			)
 		);
-
-		this.removeEventListeners.push(
-			addListener(challengeButton, "click", () =>
-				this.app.start("online", "challenge")
-			)
-		);
-
-		this.removeEventListeners.push(
-			addListener(takeChallengeButton, "click", () => {
-				const key = prompt("Ключ партии:");
-				this.app.start("online", "challenge", key);
-			})
-		);
 	}
 
 	stop() {
@@ -153,14 +140,9 @@ class PreparationScene extends Scene {
 
 		if (player.complete) {
 			document.querySelector('[data-computer="AI"]').disabled = false;
-
 			document.querySelector('[data-type="random"]').disabled = false;
-			document.querySelector('[data-type="challenge"]').disabled = false;
-			document.querySelector('[data-type="takeChallenge"]').disabled = false;
 		} else {
 			document.querySelector('[data-computer="AI"]').disabled = true;
-			document.querySelector('[data-type="challenge"]').disabled = true;
-			document.querySelector('[data-type="takeChallenge"]').disabled = true;
 		}
 	}
 
