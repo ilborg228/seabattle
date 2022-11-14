@@ -134,4 +134,20 @@ class BattlefieldView extends Battlefield {
 
 		return true;
 	}
+
+	/////////////////////////////////////////////////////////
+
+	checkShipIsKilled(x, y) {
+		return super.checkShipIsKilled(x, y);
+	}
+
+	checkShip(x, y) {
+		return super.checkShip(x, y);
+	}
+
+	checkShot(x, y) {
+		return super.checkShot(x, y);
+	}
+
+	/////////////////////////////////////////////////////////
 }
