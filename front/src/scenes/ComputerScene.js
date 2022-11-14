@@ -1,15 +1,22 @@
 class ComputerScene extends Scene {
-	untouchables = [];
 	playerTurn = true;
 	status = null;
 	removeEventListeners = [];
+	bot = null; //тут поле для ИИ
+	smartAttack = true; //будет ли добивание
 
 	init() {
 		this.status = document.querySelector(".battlefield-status");
 	}
 
-	start(untouchables) {
+	start(firstCells, smartAttack) {
 		const { opponent } = this.app;
+		const { player } = this.app;
+		this.smartAttack = smartAttack;
+		const BotClass = BotAI;
+		if (smartAttack) {
+			this.bot = new BotClass(player, firstCells);
+		}
 
 		document
 			.querySelectorAll(".app-actions")
@@ -21,8 +28,6 @@ class ComputerScene extends Scene {
 
 		opponent.clear();
 		opponent.randomize(ShipView);
-
-		this.untouchables = untouchables;
 
 		this.removeEventListeners = [];
 
@@ -98,25 +103,18 @@ class ComputerScene extends Scene {
 		}
 
 		if (!this.playerTurn) {
-			const x = getRandomBetween(0, 9);
-			const y = getRandomBetween(0, 9);
+			if (!this.smartAttack) { //если не думает над атакой, то как было оставляем
+				const x = getRandomBetween(0, 9);
+				const y = getRandomBetween(0, 9);
 
-			let inUntouchable = false;
-
-			for (const item of this.untouchables) {
-				if (item.x === x && item.y === y) {
-					inUntouchable = true;
-					break;
-				}
-			}
-
-			if (!inUntouchable) {
 				const shot = new ShotView(x, y);
 				const result = player.addShot(shot);
 
 				if (result) {
 					this.playerTurn = shot.variant === "miss";
 				}
+			} else { //иначе обращаемся к ИИ
+				this.playerTurn = !this.bot.atack();
 			}
 		}
 

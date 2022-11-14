@@ -269,4 +269,50 @@ class Battlefield {
 		this.removeAllShots();
 		this.removeAllShips();
 	}
+
+	//Это для ИИ
+	/////////////////////////////////////////////////////////
+	checkShipIsKilled(x, y) { //убит корабль по данным координатам или нет
+		const matrix = this.matrix;
+		if (!matrix[y][x].ship) {
+			return false;
+		}
+
+		const { ship } = matrix[y][x];
+		const dx = ship.direction === "row";
+		const dy = ship.direction === "column";
+
+		let killed = true;
+
+		for (let i = 0; i < ship.size; i++) {
+			const cx = ship.x + dx * i;
+			const cy = ship.y + dy * i;
+			const item = matrix[cy][cx];
+
+			if (!item.wounded) {
+				killed = false;
+				break;
+			}
+		}
+
+		return killed;
+	}
+
+	checkShip(x, y) { //есть ли корабль по данным координатам
+		const matrix = this.matrix;
+		return matrix[y][x].ship;
+	}
+
+	checkShot(sx, sy) { //есть ли попадание по данным координатам
+		if (sx < 0 || sy < 0 || sx > 9 || sy > 9) {
+            return false;
+        }
+		for (const { x, y } of this.shots) {
+			if (sx === x && sy === y) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/////////////////////////////////////////////////////////
 }
