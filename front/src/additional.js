@@ -7,6 +7,20 @@ function getRandomFrom(...args) {
 	return args[index];
 }
 
+function getRandomFromArray(array) {
+	const index = Math.floor(Math.random() * array.length);
+	return array[index];
+}
+
+function removeFromArray(array, element) {
+	const index = array.indexOf(element);
+	if (index > -1) { // only splice array when item is found
+		array.splice(index, 1); // 2nd parameter means remove one item only
+	}
+
+	return array;
+}
+
 function isUnderPoint(point, element) {
 	const { left, top, width, height } = element.getBoundingClientRect();
 	const { x, y } = point;

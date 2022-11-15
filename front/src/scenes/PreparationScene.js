@@ -43,17 +43,13 @@ class PreparationScene extends Scene {
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const aiButton = document.querySelector('[data-computer="AI"]');
 		const randomButton = document.querySelector('[data-type="random"]');
-		const challengeButton = document.querySelector('[data-type="challenge"]');
-		const takeChallengeButton = document.querySelector(
-			'[data-type="takeChallenge"]'
-		);
 
 		this.removeEventListeners.push(
 			addListener(manuallyButton, "click", () => this.manually())
 		);
 
 		this.removeEventListeners.push(
-			addListener(randomizeButton, "click", () => this.randomize())
+			addListener(randomizeButton, "click", () => this.placementByValue())
 		);
 
 		this.removeEventListeners.push(
@@ -64,19 +60,6 @@ class PreparationScene extends Scene {
 			addListener(randomButton, "click", () =>
 				this.app.start("online", "random")
 			)
-		);
-
-		this.removeEventListeners.push(
-			addListener(challengeButton, "click", () =>
-				this.app.start("online", "challenge")
-			)
-		);
-
-		this.removeEventListeners.push(
-			addListener(takeChallengeButton, "click", () => {
-				const key = prompt("Ключ партии:");
-				this.app.start("online", "challenge", key);
-			})
 		);
 	}
 
@@ -153,14 +136,9 @@ class PreparationScene extends Scene {
 
 		if (player.complete) {
 			document.querySelector('[data-computer="AI"]').disabled = false;
-
 			document.querySelector('[data-type="random"]').disabled = false;
-			document.querySelector('[data-type="challenge"]').disabled = false;
-			document.querySelector('[data-type="takeChallenge"]').disabled = false;
 		} else {
 			document.querySelector('[data-computer="AI"]').disabled = true;
-			document.querySelector('[data-type="challenge"]').disabled = true;
-			document.querySelector('[data-type="takeChallenge"]').disabled = true;
 		}
 	}
 
@@ -169,6 +147,36 @@ class PreparationScene extends Scene {
 
 		player.randomize(ShipView);
 
+		this.setStartCord(player)
+	}
+
+	borders() {
+		const { player } = this.app;
+		let a = true
+		while (a) {
+			console.log("v")
+			player.borders(ShipView);
+			a = false
+			for (let i = 0; i < 10; i++) {
+				const ship = player.ships[i];
+				if (ship.x == null) {
+					a = true
+				}
+			}
+		}
+
+		this.setStartCord(player)
+	}
+
+	diagonal() {
+		const { player } = this.app;
+
+		player.diagonal(ShipView);
+
+		this.setStartCord(player)
+	}
+
+	setStartCord(player) {
 		for (let i = 0; i < 10; i++) {
 			const ship = player.ships[i];
 
@@ -188,10 +196,34 @@ class PreparationScene extends Scene {
 		}
 	}
 
-	startComputerByValue() { //в зависимости от выбора radio выбираем сложность
-		var radios = document.getElementsByName('difficult-level');
+	placementByValue() { //в зависимости от выбора radio расстанавливаем
+		let radios = document.getElementsByName('ship-placement');
 		let val ="";
-		for (var i = 0, length = radios.length; i < length; i++) {
+		for (let i = 0, length = radios.length; i < length; i++) {
+			if (radios[i].checked) {
+				val = radios[i].value;
+				break;
+			}
+		}
+		switch (val) {
+			case "2":
+				this.borders();
+				break;
+
+			case "3":
+				this.diagonal();
+				break;
+
+			default:
+				this.randomize();
+				break;
+		}
+	}
+
+	startComputerByValue() { //в зависимости от выбора radio выбираем сложность
+		let radios = document.getElementsByName('difficult-level');
+		let val ="";
+		for (let i = 0, length = radios.length; i < length; i++) {
 			if (radios[i].checked) {
 				val = radios[i].value;
 				break;
