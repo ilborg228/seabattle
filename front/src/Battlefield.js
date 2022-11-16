@@ -307,6 +307,7 @@ class Battlefield {
 	diagonal(ShipClass = Ship) {
 		this.diagonalForribden = true
 		this.randomPlacement(ShipClass)
+		this.diagonalForribden = false
 	}
 
 	randomPlacement(ShipClass = Ship) {
