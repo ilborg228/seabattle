@@ -43,7 +43,7 @@ class PreparationScene extends Scene {
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const aiButton = document.querySelector('[data-computer="AI"]');
 		const randomButton = document.querySelector('[data-type="random"]');
-		const downloadButton = document.querySelector('[data-type="download"]');
+		const downloadButton = document.querySelector('[data-action="download"]');
 
 		this.removeEventListeners.push(
 			addListener(manuallyButton, "click", () => this.manually())
@@ -62,6 +62,10 @@ class PreparationScene extends Scene {
 				this.app.start("online", "random")
 			)
 		);
+
+		this.removeEventListeners.push(
+			addListener(downloadButton, "click", () => this.saveToPlacementToFile())
+		)
 
 		const fileSelector = document.getElementById('file-selector')
 		fileSelector.addEventListener('change', this.onChange)
@@ -142,8 +146,11 @@ class PreparationScene extends Scene {
 		if (player.complete) {
 			document.querySelector('[data-computer="AI"]').disabled = false;
 			document.querySelector('[data-type="random"]').disabled = false;
+			document.querySelector('[data-action="download"]').disabled = false;
 		} else {
 			document.querySelector('[data-computer="AI"]').disabled = true;
+			document.querySelector('[data-type="random"]').disabled = true;
+			document.querySelector('[data-action="download"]').disabled = true;
 		}
 	}
 
@@ -153,6 +160,21 @@ class PreparationScene extends Scene {
 		player.randomize(ShipView);
 
 		this.setStartCord(player)
+	}
+
+	saveToPlacementToFile() {
+		let data = [];
+		const { player } = app;
+		for (const ship of player.ships) {
+			const { size, direction, x, y } = ship;
+			data.push({ size, direction, x, y });
+		}
+		let dataString = JSON.stringify(data);
+		let file = new Blob([dataString], { type : "text" });
+		let anchor = document.createElement("a");
+		anchor.href = URL.createObjectURL(file);
+		anchor.download = "placement.json";
+		anchor.click();
 	}
 
 	//Read Json from file
