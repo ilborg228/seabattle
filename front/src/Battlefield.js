@@ -5,6 +5,8 @@ class Battlefield {
 	_private_matrix = null;
 	_private_changed = true;
 
+	diagonalForribden = false
+
 	get loser() {
 		for (const ship of this.ships) {
 			if (!ship.killed) {
@@ -35,6 +37,10 @@ class Battlefield {
 					shoted: false,
 					wounded: false,
 				};
+
+				if (this.diagonalForribden && (x === y || 9 - x === y)) {
+					item.free = false;
+				}
 
 				row.push(item);
 			}
@@ -247,70 +253,64 @@ class Battlefield {
 	}
 
 	randomize(ShipClass = Ship) {
-		this.removeAllShips();
-
-		for (let size = 4; size >= 1; size--) {
-			for (let n = 0; n < 5 - size; n++) {
-				const direction = getRandomFrom("row", "column");
-				const ship = new ShipClass(size, direction);
-
-				while (!ship.placed) {
-					const x = getRandomBetween(0, 9);
-					const y = getRandomBetween(0, 9);
-
-					this.removeShip(ship);
-					this.addShip(ship, x, y);
-				}
-			}
-		}
+		this.diagonalForribden = false
+		this.randomPlacement(ShipClass)
 	}
 
 	borders(ShipClass = Ship) {
-		this.removeAllShips();
+		this.diagonalForribden = false
+		do {
+			this.removeAllShips();
 
-		let sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
-		let coord = 0
-		let row = true
-		for (let i = 0; i < 4; i++) {
-			while (coord < 9) {
-				let size = getRandomFromArray(sizes)
-				if (size === undefined) break;
-				const direction = row ? "row" : "column";
-				const ship = new ShipClass(size, direction)
+			let sizes = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1]
+			let coord = 0
+			let row = true
+			for (let i = 0; i < 4; i++) {
+				while (coord < 9) {
+					let size = getRandomFromArray(sizes)
+					if (size === undefined) break;
+					const direction = row ? "row" : "column";
+					const ship = new ShipClass(size, direction)
 
-				if (size + coord <= 9) {
-					switch (i) {
-						case 0:
-							this.addShip(ship, coord, 0)
-							sizes = removeFromArray(sizes, size)
-							break;
-						case 1:
-							this.addShip(ship, 9, coord)
-							sizes = removeFromArray(sizes, size)
-							break;
-						case 2:
-							this.addShip(ship, coord, 9)
-							sizes = removeFromArray(sizes, size)
-							break;
-						case 3:
-							coord += 2
-							this.addShip(ship, 0, coord)
-							sizes = removeFromArray(sizes, size)
-							break
-						default:
-							alert( "Нет таких значений" );
+					if (size + coord <= 9) {
+						switch (i) {
+							case 0:
+								this.addShip(ship, coord, 0)
+								sizes = removeFromArray(sizes, size)
+								break;
+							case 1:
+								this.addShip(ship, 9, coord)
+								sizes = removeFromArray(sizes, size)
+								break;
+							case 2:
+								this.addShip(ship, coord, 9)
+								sizes = removeFromArray(sizes, size)
+								break;
+							case 3:
+								coord += 2
+								this.addShip(ship, 0, coord)
+								sizes = removeFromArray(sizes, size)
+								break
+							default:
+								alert( "Нет таких значений" );
+						}
 					}
+					coord += size + 1
+
 				}
-				coord += size +1
-
+				coord = 0
+				row = !row
 			}
-			coord = 0
-			row = !row
-		}
-
+		} while (!this.checkShipsSpawnedRight())
 	}
 
 	diagonal(ShipClass = Ship) {
+		this.diagonalForribden = true
+		this.randomPlacement(ShipClass)
+		this.diagonalForribden = false
+	}
+
+	randomPlacement(ShipClass = Ship) {
 		this.removeAllShips();
 
 		for (let size = 4; size >= 1; size--) {
@@ -379,4 +379,19 @@ class Battlefield {
 		return false;
 	}
 	/////////////////////////////////////////////////////////
+
+	checkShipsSpawnedRight() {
+		if (this.ships.length !== 10) {
+			return false
+		}
+		for (let i = 0; i < this.ships.length; i++) {
+			if (this.ships[i].x === null ||
+				this.ships[i].y === null ||
+				this.ships[i].direction === null
+			) {
+				return false
+			}
+		}
+		return true
+	}
 }
