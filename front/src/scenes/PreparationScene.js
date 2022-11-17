@@ -184,21 +184,27 @@ class PreparationScene extends Scene {
 			try {
 				let placement = JSON.parse(ev.target.result);
 				const { player } = app;
+				let usedCords = [];
+
+				for (const { size, direction, x, y } of placement) {
+					if (size == null || direction == null || x == null || y == null || 
+						size > 4 || size < 0 || x > 9 || y > 9|| x < 0 || y < 0
+					) {
+						alert("Вы ввели некорректный файл расстановки")
+						return;
+					} else {
+						for (const item of usedCords) {
+							if (x === item.x && y === item.y) {
+								alert("Вы ввели некорректный файл расстановки")
+								return;
+							}
+						}
+						usedCords.push({ x, y });
+					}
+				}
 
 				player.removeAllShips();
 
-				for (const { size, direction, x, y } of placement) {
-					if (size == null || direction == null || x == null || y == null || size > 4 || size < 0 || x >9 || y >9|| x <0 || y <0){
-						console.log(size+":" + direction + ":" + x + ":" + y)
-
-						for (const { size, direction, startX, startY } of shipDatas) {
-							const ship = new ShipView(size, direction, startX, startY);
-							player.addShip(ship);
-						}
-						alert("Вы ввели некорректный файл расстановки")
-						return;
-					}
-				}
 				for (const { size, direction, x, y } of placement) {
 					const ship = new ShipView(size, direction);
 					player.addShip(ship, x, y);
