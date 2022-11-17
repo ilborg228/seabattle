@@ -43,6 +43,7 @@ class PreparationScene extends Scene {
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const aiButton = document.querySelector('[data-computer="AI"]');
 		const randomButton = document.querySelector('[data-type="random"]');
+		const downloadButton = document.querySelector('[data-type="download"]');
 
 		this.removeEventListeners.push(
 			addListener(manuallyButton, "click", () => this.manually())
@@ -61,6 +62,10 @@ class PreparationScene extends Scene {
 				this.app.start("online", "random")
 			)
 		);
+
+		const fileSelector = document.getElementById('file-selector')
+		fileSelector.addEventListener('change', this.onChange)
+		fileSelector.onclick = ev => {ev.target.value = null}
 	}
 
 	stop() {
@@ -148,6 +153,40 @@ class PreparationScene extends Scene {
 		player.randomize(ShipView);
 
 		this.setStartCord(player)
+	}
+
+	//Read Json from file
+	onChange(event) {
+		let reader = new FileReader();
+		reader.onload = ev => {
+			try {
+				let placement = JSON.parse(ev.target.result);
+				const { player } = app;
+
+				player.removeAllShips();
+
+				for (const { size, direction, x, y } of placement) {
+					if (size == null || direction == null || x == null || y == null || size > 4 || size < 0 || x >9 || y >9|| x <0 || y <0){
+						console.log(size+":" + direction + ":" + x + ":" + y)
+
+						for (const { size, direction, startX, startY } of shipDatas) {
+							const ship = new ShipView(size, direction, startX, startY);
+							player.addShip(ship);
+						}
+						alert("Вы ввели некорректный файл расстановки")
+						return;
+					}
+				}
+				for (const { size, direction, x, y } of placement) {
+					const ship = new ShipView(size, direction);
+					player.addShip(ship, x, y);
+				}
+			} catch (e) {
+				console.log(e)
+				alert("Вы ввели некорректный файл расстановки")
+			}
+		};
+		reader.readAsText(event.target.files[0]);
 	}
 
 	borders() {
