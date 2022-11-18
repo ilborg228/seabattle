@@ -16,6 +16,10 @@ class PreparationScene extends Scene {
 	draggedOffsetX = 0;
 	draggedOffestY = 0;
 
+	oldX = null;
+	oldY = null;
+	oldDir = null;
+
 	removeEventListeners = [];
 
 	init() {
@@ -94,6 +98,10 @@ class PreparationScene extends Scene {
 				this.draggedOffsetX = mouse.x - shipRect.left;
 				this.draggedOffsetY = mouse.y - shipRect.top;
 
+				this.oldX = ship.x;
+				this.oldY = ship.y;
+				this.oldDir = ship.direction;
+
 				ship.x = null;
 				ship.y = null;
 			}
@@ -127,14 +135,21 @@ class PreparationScene extends Scene {
 				.find((cell) => isUnderPoint(point, cell));
 
 			if (cell) {
-				const x = parseInt(cell.dataset.x);
-				const y = parseInt(cell.dataset.y);
+				let x = parseInt(cell.dataset.x);
+				let y = parseInt(cell.dataset.y);
+
+				if (!player.canPlaceHere(x, y)) {
+					x = this.oldX;
+					y = this.oldY;
+					ship.setDirection(this.oldDir, true);
+				}
 
 				player.removeShip(ship);
 				player.addShip(ship, x, y);
 			} else {
+				ship.setDirection(this.oldDir, true);
 				player.removeShip(ship);
-				player.addShip(ship);
+				player.addShip(ship, this.oldX, this.oldY);
 			}
 		}
 
@@ -208,10 +223,15 @@ class PreparationScene extends Scene {
 				for (const { size, direction, x, y } of placement) {
 					const ship = new ShipView(size, direction);
 					player.addShip(ship, x, y);
+					if (!ship.placed) {
+						alert("Читерить вздумал? Ты пойман за руку как дешевка!\nЗапутаю тебя рандомом!");
+						this.randomize();
+						return;
+					}
 				}
 			} catch (e) {
-				console.log(e)
-				alert("Вы ввели некорректный файл расстановки")
+				console.log(e);
+				alert("Вы ввели некорректный файл расстановки");
 			}
 		};
 		reader.readAsText(event.target.files[0]);
@@ -219,19 +239,7 @@ class PreparationScene extends Scene {
 
 	borders() {
 		const { player } = this.app;
-		let a = true
-		while (a) {
-			console.log("v")
-			player.borders(ShipView);
-			a = false
-			for (let i = 0; i < 10; i++) {
-				const ship = player.ships[i];
-				if (ship.x == null) {
-					a = true
-				}
-			}
-		}
-
+		player.borders(ShipView);
 		this.setStartCord(player)
 	}
 
@@ -318,6 +326,24 @@ class PreparationScene extends Scene {
 		if (level === "simple") {
 			smartAttack = false;
 		} else if (level === "hard") {
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 4 - x;
+				firstCells.push({ x, y });
+			}
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 9 - x;
+				x += 5;
+				firstCells.push({ x, y });
+			}
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 5 + x;
+				firstCells.push({ x, y });
+				firstCells.push({ y, x });
+			}
+
 			for (let y = 0; y < 10; y++) {
 				for (let x = 0; x < 10; x++) {
 					if (x === y || x === 9 - y) {
