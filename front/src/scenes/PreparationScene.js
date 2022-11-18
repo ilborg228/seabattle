@@ -326,6 +326,24 @@ class PreparationScene extends Scene {
 		if (level === "simple") {
 			smartAttack = false;
 		} else if (level === "hard") {
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 4 - x;
+				firstCells.push({ x, y });
+			}
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 9 - x;
+				x += 5;
+				firstCells.push({ x, y });
+			}
+
+			for (let x = 0; x <= 4; x++) {
+				let y = 5 + x;
+				firstCells.push({ x, y });
+				firstCells.push({ y, x });
+			}
+
 			for (let y = 0; y < 10; y++) {
 				for (let x = 0; x < 10; x++) {
 					if (x === y || x === 9 - y) {
