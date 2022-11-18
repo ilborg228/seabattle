@@ -400,4 +400,9 @@ module.exports = class Battlefield {
 		}
 		return true
 	}
+	
+	canPlaceHere(x, y) {
+		const item = this.matrix[y][x];
+		return item.free;
+	}
 };
