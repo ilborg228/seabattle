@@ -18,7 +18,7 @@ class ShotView extends Shot {
 
 		this.variant = variant;
 
-		this.div.classList.remove("shot-missed", "shot-wounded", "shot-killed");
+		this.clearDiv();
 		this.div.textContent = "";
 
 		if (this.variant === "miss") {
@@ -27,9 +27,16 @@ class ShotView extends Shot {
 		} else if (this.variant === "wounded") {
 			this.div.classList.add("shot-wounded");
 		} else if (this.variant === "killed") {
-			this.div.classList.add("shot-wounded", "shot-killed");
+			this.clearDiv();
+			this.div.classList.add("shot-killed");
 		}
 
 		return true;
+	}
+
+	clearDiv() {
+		for (let i = this.div.classList.length; i >= 0; i--) {
+			this.div.classList.remove(i);
+		 }
 	}
 }

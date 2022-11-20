@@ -56,10 +56,12 @@ body {
 	width: 32px;
 	height: 32px;
 	border: 1px solid rgba(6, 25, 247, 0.15);
+	background-image: url(sprites/sea.png);
+	background-size : 100% 100%;
 }
 
 .battlefield-item__active {
-	background: rgba(123, 121, 255, 0.2);
+	background: rgba(10, 8, 93, 0.2);
 }
 
 .marker {
@@ -92,8 +94,8 @@ body {
 	top: 0;
 	left: 0;
 	margin: -3px;
-	border: 3px solid #0400ff;
-	background: rgba(0, 55, 255, 0.45);
+	/*border: 3px solid #0400ff;
+	background: rgba(0, 55, 255, 0.45);*/
 	width: 32px;
 	height: 32px;
 	font-size: 0;
@@ -113,33 +115,65 @@ img {
 }
 
 .ship-row-1 {
+	background-image: url(sprites/1-deck-ship-r.png);
+	background-size : 100% 100%;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-row-2 {
+	background-image: url(sprites/2-deck-ship-r.png);
+	background-size : 100% 100%;
 	width: 64px;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-row-3 {
+	background-image: url(sprites/3-deck-ship-r.png);
+	background-size : 100% 100%;
 	width: 96px;
+	align-items: center;
+  	justify-content: center
 }
 
 .ship-row-4 {
+	background-image: url(sprites/4-deck-ship-r.png);
+	background-size : 100% 100%;
 	width: 128px;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-column-1 {
+	background-image: url(sprites/1-deck-ship.png);
+	background-size : 100% 100%;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-column-2 {
+	background-image: url(sprites/2-deck-ship.png);
+	background-size : 100% 100%;
 	height: 64px;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-column-3 {
+	background-image: url(sprites/3-deck-ship.png);
+	background-size : 100% 100%;
 	height: 96px;
+	align-items: center;
+  	justify-content: center;
 }
 
 .ship-column-4 {
+	background-image: url(sprites/4-deck-ship.png);
+	background-size : 100% 100%;
 	height: 128px;
+	align-items: center;
+  justify-content: center
 }
 
 .app-actions {
@@ -174,9 +208,11 @@ img {
 
 .shot-wounded {
 	background: #fbdede;
+	background-image: url(sprites/injured.gif);
+	background-size : 100% 100%;
 	z-index: 1;
 }
-
+/*
 .shot-wounded::after {
 	content: " ";
 	width: calc(32px * 1.3);
@@ -200,10 +236,10 @@ img {
 	top: 9px;
 	left: 9px;
 }
-
+*/
 .shot-killed {
-	margin: -3px;
-	border: 3px solid red;
+	background-image: url(sprites/ship-deck-killed.png);
+	background-size : 110% 110%;
 }
 
 .hidden {
