@@ -43,11 +43,16 @@ class PreparationScene extends Scene {
 			.querySelector('[data-scene="preparation"]')
 			.classList.remove("hidden");
 
+		const loginButton = document.querySelector('[data-type="login"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
 		const randomizeButton = document.querySelector('[data-action="randomize"]');
 		const aiButton = document.querySelector('[data-computer="AI"]');
 		const randomButton = document.querySelector('[data-type="random"]');
 		const downloadButton = document.querySelector('[data-action="download"]');
+
+		this.removeEventListeners.push(
+			addListener(loginButton, "click", () => this.login())
+		);
 
 		this.removeEventListeners.push(
 			addListener(manuallyButton, "click", () => this.manually())
@@ -74,6 +79,13 @@ class PreparationScene extends Scene {
 		const fileSelector = document.getElementById('file-selector')
 		fileSelector.addEventListener('change', this.onChange)
 		fileSelector.onclick = ev => {ev.target.value = null}
+	}
+
+	login() {
+		const {socket} = this.app
+		const textField = document.getElementById('input-login')
+
+		socket.emit('login', textField.value)
 	}
 
 	stop() {

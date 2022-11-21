@@ -46,6 +46,7 @@ io.use((socket, next) => {
 io.on("connection", (socket) => {
 	pm.connection(socket);
 	io.emit("playerCount", io.engine.clientsCount);
+	console.log(socket.request.sessionID)
 
 	// Отключение коннекта
 	socket.on("disconnect", () => {

@@ -36,6 +36,11 @@
 				<div data-side="player"></div>
 				<div class="app-menu">
 					<div class="app-actions" data-scene="preparation">
+						<label for="input-login">Введите свой никнейм</label>
+						<input id="input-login" type="text" style="width: 206px">
+						<button class="app-action" data-type="login">
+							Войти
+						</button>
 						<button class="app-action" data-type="random" disabled>
 							Случайный игрок
 						</button>
@@ -71,6 +76,7 @@
 						<button class="app-action" data-action="manually">
 							Убрать корабли
 						</button>
+						<p>Загрузить расстановку из файла</p>
 						<input type="file" id="file-selector" multiple style="margin-bottom: 7px">
 						<button class="app-action" data-action="download">
 							Загрузить файл расстановки

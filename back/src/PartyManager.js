@@ -2,12 +2,15 @@ const Player = require("./Player");
 const Party = require("./Party");
 const Ship = require("./Ship");
 const { getRandomString } = require("./additional");
+const connection = require("../index");
+const {getByUsername, insertNewUser} = require("./PlayerStatRepo");
 
 const RECONNECTION_TIMER = 5000;
 
 module.exports = class PartyManager {
 	players = [];
 	parties = [];
+	playerStat = null
 
 	waitingRandom = [];
 	waitingChallenge = new Map();
@@ -136,6 +139,15 @@ module.exports = class PartyManager {
 			if (player.party) {
 				player.party.sendMessage(message);
 			}
+		});
+
+		socket.on("login", (username) => {
+			getByUsername(username).then(res => {
+				this.playerStat = res
+				if(this.playerStat.username === undefined) {
+					insertNewUser(username)
+				}
+			})
 		});
 	}
 

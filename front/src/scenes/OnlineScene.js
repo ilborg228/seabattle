@@ -6,8 +6,7 @@ class OnlineScene extends Scene {
 	removeEventListeners = [];
 
 	init() {
-		const actionsBar = document.querySelector('[data-scene="online"]');
-		this.actionsBar = actionsBar;
+		this.actionsBar = document.querySelector('[data-scene="online"]');
 
 		const { socket, player, opponent } = this.app;
 

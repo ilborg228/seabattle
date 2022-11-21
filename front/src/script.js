@@ -6,10 +6,21 @@ const app = new Application({
 
 app.start("preparation");
 
-let isPlaying = false;
+let isPlaying = false
+let audio = null
 function playMusic() {
-	let audio = new Audio('audio.mp3');
-	audio.play();
+	if (!isPlaying) {
+		audio = new Audio('audio.mp3')
+		audio.play().then(r => isPlaying = true)
+		audio.addEventListener('ended', (ev) =>{
+			console.log("ended")
+			audio.play()
+		})
+	} else {
+		audio.pause()
+		audio.currentTime = 0
+		isPlaying = false
+	}
 }
 
 let modal = document.getElementById('modalWindow');
