@@ -207,7 +207,6 @@ img {
 }
 
 .shot-wounded {
-	background: #fbdede;
 	background-image: url(sprites/injured.gif);
 	background-size : 100% 100%;
 	z-index: 1;
@@ -238,8 +237,9 @@ img {
 }
 */
 .shot-killed {
-	background-image: url(sprites/ship-deck-killed.png);
-	background-size : 110% 110%;
+	background-image: url(sprites/killed.gif);
+	opacity: 50%;
+	background-size : 100% 100%;
 }
 
 .hidden {
