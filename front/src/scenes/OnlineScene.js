@@ -125,7 +125,7 @@ class OnlineScene extends Scene {
 
 		this.removeEventListeners.push(
 			addListener(gaveupButton, "click", () => {
-				socket.emit("gaveup");
+				socket.emit("gaveup", "");
 				this.app.start("preparation");
 			})
 		);

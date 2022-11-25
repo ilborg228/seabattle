@@ -1,5 +1,7 @@
 const Observer = require("./Observer");
 const Shot = require("./Shot");
+const e = require("express");
+const {incrementWin, incrementLose} = require("./PlayerStatRepo");
 
 class Party extends Observer {
 	player1 = null;
@@ -51,6 +53,14 @@ class Party extends Observer {
 
 		player1.emit("statusChange", player1 === player ? "loser" : "winner");
 		player2.emit("statusChange", player2 === player ? "loser" : "winner");
+
+		if (player1 === player) {
+			incrementLose(player1.username)
+			incrementWin(player2.username)
+		} else {
+			incrementLose(player2.username)
+			incrementWin(player1.username)
+		}
 
 		this.stop();
 	}

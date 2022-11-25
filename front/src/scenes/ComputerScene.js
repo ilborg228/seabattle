@@ -4,14 +4,14 @@ class ComputerScene extends Scene {
 	removeEventListeners = [];
 	bot = null; //тут поле для ИИ
 	smartAttack = true; //будет ли добивание
+	isShown = false //
 
 	init() {
 		this.status = document.querySelector(".battlefield-status");
 	}
 
 	start(firstCells, smartAttack) {
-		const { opponent } = this.app;
-		const { player } = this.app;
+		const { socket, player, opponent } = this.app;
 		this.smartAttack = smartAttack;
 		const BotClass = BotAI;
 		if (smartAttack) {
@@ -39,12 +39,14 @@ class ComputerScene extends Scene {
 
 		this.removeEventListeners.push(
 			addListener(gaveupButton, "click", () => {
+				socket.emit("gaveup", "offline");
 				this.app.start("preparation");
 			})
 		);
 
 		this.removeEventListeners.push(
 			addListener(againButton, "click", () => {
+				this.isShown = false
 				this.app.start("preparation");
 			})
 		);
@@ -58,8 +60,18 @@ class ComputerScene extends Scene {
 		this.removeEventListeners = [];
 	}
 
+	updateStat(socket, win) {
+		if (!this.isShown) {
+			if (win)
+				socket.emit("win")
+			else
+				socket.emit("lose")
+			this.isShown = true
+		}
+	}
+
 	update() {
-		const { mouse, opponent, player } = this.app;
+		const { socket, mouse, opponent, player } = this.app;
 
 		const isEnd = opponent.loser || player.loser;
 
@@ -69,15 +81,15 @@ class ComputerScene extends Scene {
 		if (isEnd) {
 			if (opponent.loser) {
 				this.status.textContent = "Вы выиграли!";
+				this.updateStat(socket,true)
 			} else {
 				this.status.textContent = "Вы проиграли ((";
+				this.updateStat(socket,false)
 			}
 
 			document.querySelector('[data-action="gaveup"]').classList.add("hidden");
 
-			document
-				.querySelector('[data-action="again"]')
-				.classList.remove("hidden");
+			document.querySelector('[data-action="again"]').classList.remove("hidden");
 
 			return;
 		}

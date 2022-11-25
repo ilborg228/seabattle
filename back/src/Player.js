@@ -5,6 +5,7 @@ module.exports = class Player {
 	socket = null;
 	party = null;
 	sessionId = null;
+	username = null
 
 	get ready() {
 		return this.battlefield.complete && !this.party && this.socket;
