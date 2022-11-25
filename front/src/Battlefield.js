@@ -7,6 +7,8 @@ class Battlefield {
 
 	diagonalForribden = false
 
+	runningKilledShip = null;
+
 	get loser() {
 		for (const ship of this.ships) {
 			if (!ship.killed) {
@@ -179,6 +181,8 @@ class Battlefield {
 	}
 
 	addShot(shot) {
+		this.runningKilledShip = null;
+
 		for (const { x, y } of this.shots) {
 			if (x === shot.x && y === shot.y) {
 				return false;
@@ -213,6 +217,7 @@ class Battlefield {
 
 			if (killed) {
 				ship.killed = true;
+				this.runningKilledShip = ship;
 
 				for (let i = 0; i < ship.size; i++) {
 					const cx = ship.x + dx * i;

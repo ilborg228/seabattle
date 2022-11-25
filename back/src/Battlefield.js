@@ -5,6 +5,8 @@ module.exports = class Battlefield {
 	_private_matrix = null;
 	_private_changed = true;
 
+	runningKilledShip = null;
+
 	diagonalForribden = false
 
 	get loser() {
@@ -179,6 +181,8 @@ module.exports = class Battlefield {
 	}
 
 	addShot(shot) {
+		this.runningKilledShip = null;
+
 		for (const { x, y } of this.shots) {
 			if (x === shot.x && y === shot.y) {
 				return false;
@@ -213,6 +217,7 @@ module.exports = class Battlefield {
 
 			if (killed) {
 				ship.killed = true;
+				this.runningKilledShip = ship;
 
 				for (let i = 0; i < ship.size; i++) {
 					const cx = ship.x + dx * i;

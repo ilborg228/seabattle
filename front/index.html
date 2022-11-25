@@ -35,21 +35,17 @@
 			<div class="app-body">
 				<div data-side="player"></div>
 				<div class="app-menu">
-					<div class="app-actions" data-scene="preparation">
+					<div class="app-login">
 						<label for="input-login">Введите свой никнейм</label>
 						<input id="input-login" type="text" style="width: 206px">
 						<button class="app-action" data-type="login">
 							Войти
 						</button>
+					</div>
+					<div class="app-actions" data-scene="preparation">
 						<button class="app-action" data-type="random" disabled>
 							Случайный игрок
 						</button>
-						<!--<button class="app-action" data-type="challenge" disabled>
-							Вызвать на бой
-						</button>
-						<button class="app-action" data-type="takeChallenge" disabled>
-							Принять вызов
-						</button>-->
 						<button class="app-action" data-computer="AI" disabled>
 							Играть против ИИ
 						</button>
@@ -57,15 +53,6 @@
 						<p><input type="radio" class="radio-body" name="difficult-level" id="simple" value="1" checked> лихой пират</p>
 						<p><input type="radio" class="radio-body" name="difficult-level" id="middle" value="2"> капитан</p>
 						<p><input type="radio" class="radio-body" name="difficult-level" id="hard" value="3"> адмирал</p>
-						
-					<!--
-						<button class="app-action" data-computer="middle" disabled>
-							Играть против среднего
-						</button>
-						<button class="app-action" data-computer="hard" disabled>
-							Играть против сильного
-						</button>
-					-->
 						<button class="app-action" data-action="randomize">
 							Расставить корабли по стратегии
 						</button>

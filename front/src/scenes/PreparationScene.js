@@ -19,6 +19,7 @@ class PreparationScene extends Scene {
 	oldX = null;
 	oldY = null;
 	oldDir = null;
+	runningUser = null;
 
 	removeEventListeners = [];
 
@@ -36,12 +37,20 @@ class PreparationScene extends Scene {
 		this.removeEventListeners = [];
 
 		document
-			.querySelectorAll(".app-actions")
-			.forEach((element) => element.classList.add("hidden"));
-
+			.querySelector('[data-scene="computer"]')
+			.classList.add("hidden");
 		document
-			.querySelector('[data-scene="preparation"]')
-			.classList.remove("hidden");
+			.querySelector(".app-chat")
+			.classList.add("hidden");
+		document
+			.querySelector('[data-scene="online"]')
+			.classList.add("hidden");
+
+		if (this.runningUser != null) {
+			this.showPreparation();
+		} else {
+			this.showLogin();
+		}
 
 		const loginButton = document.querySelector('[data-type="login"]');
 		const manuallyButton = document.querySelector('[data-action="manually"]');
@@ -84,8 +93,35 @@ class PreparationScene extends Scene {
 	login() {
 		const {socket} = this.app
 		const textField = document.getElementById('input-login')
+		if (textField.value.length < 4) {
+			alert("Длина никнейма должна быть больше 4 символов!")
+			return
+		}
+
+		this.showPreparation()
+		this.runningUser = textField.value
 
 		socket.emit('login', textField.value)
+	}
+
+	showLogin() {
+		document
+			.querySelectorAll(".app-login")
+			.forEach((element) => element.classList.remove("hidden"))
+
+		document
+			.querySelector('[data-scene="preparation"]')
+			.classList.add("hidden")
+	}
+
+	showPreparation() {
+		document
+			.querySelectorAll(".app-login")
+			.forEach((element) => element.classList.add("hidden"))
+
+		document
+			.querySelector('[data-scene="preparation"]')
+			.classList.remove("hidden")
 	}
 
 	stop() {
