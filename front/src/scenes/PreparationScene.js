@@ -236,7 +236,8 @@ class PreparationScene extends Scene {
 		let file = new Blob([dataString], { type : "text" });
 		let anchor = document.createElement("a");
 		anchor.href = URL.createObjectURL(file);
-		anchor.download = "placement.json";
+		const textField = document.getElementById('input-filename')
+		anchor.download = `${textField.value === "" ? "placement" : textField.value}.json`;
 		anchor.click();
 	}
 

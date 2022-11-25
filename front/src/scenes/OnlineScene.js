@@ -146,6 +146,7 @@ class OnlineScene extends Scene {
 
 	statusUpdate() {
 		const statusDiv = this.actionsBar.querySelector(".battlefield-status");
+		const {socket} = this.app
 
 		if (!this.status) {
 			statusDiv.textContent = "";
@@ -155,8 +156,10 @@ class OnlineScene extends Scene {
 			statusDiv.textContent = this.ownTurn ? "Ваш ход" : "Ход соперника";
 		} else if (this.status === "winner") {
 			statusDiv.textContent = "Вы победили";
+			socket.emit("win")
 		} else if (this.status === "loser") {
 			statusDiv.textContent = "Вы проиграли";
+			socket.emit("lose")
 		} else if (this.status === "waiting") {
 			statusDiv.textContent = "Ожидаем соперника";
 		}
