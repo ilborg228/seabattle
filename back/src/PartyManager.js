@@ -3,7 +3,7 @@ const Party = require("./Party");
 const Ship = require("./Ship");
 const { getRandomString } = require("./additional");
 const connection = require("../index");
-const {getByUsername, insertNewUser} = require("./PlayerStatRepo");
+const {getByUsername, insertNewUser, incrementLose, incrementWin} = require("./PlayerStatRepo");
 
 const RECONNECTION_TIMER = 5000;
 
@@ -110,9 +110,12 @@ module.exports = class PartyManager {
 			}
 		});
 
-		socket.on("gaveup", () => {
+		socket.on("gaveup", (status) => {
 			if (player.party) {
 				player.party.gaveup(player);
+			}
+			if (status === "offline") {
+				incrementLose(player.username)
 			}
 
 			if (this.waitingRandom.includes(player)) {
@@ -146,9 +149,19 @@ module.exports = class PartyManager {
 				this.playerStat = res
 				if(this.playerStat.username === undefined) {
 					insertNewUser(username)
+				} else {
+					player.username = this.playerStat.username
 				}
 			})
 		});
+
+		socket.on("win", () => {
+			incrementWin(player.username)
+		})
+
+		socket.on("lose", () => {
+			incrementLose(player.username)
+		})
 	}
 
 	disconnect(socket) {

@@ -26,3 +26,17 @@ module.exports.insertNewUser = function insertNewUser(username) {
         return true
     })
 }
+
+module.exports.incrementWin = function incrementWin(username) {
+    connection.query(`UPDATE stat SET win_count = win_count + 1 WHERE username = '${username}'`,(err, result, fields) =>{
+        console.log("updated user: " + username)
+        return true
+    })
+}
+
+module.exports.incrementLose = function incrementLose(username) {
+    connection.query(`UPDATE stat SET lose_count = lose_count + 1 WHERE username = '${username}'`,(err, result, fields) =>{
+        console.log("updated user: " + username)
+        return true
+    })
+}
