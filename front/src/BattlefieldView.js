@@ -120,6 +120,28 @@ class BattlefieldView extends Battlefield {
 		shot.div.style.left = `${cellRect.left - rootRect.left}px`;
 		shot.div.style.top = `${cellRect.top - rootRect.top}px`;
 
+		if (this.runningKilledShip != null) {
+			const ship = this.runningKilledShip;
+
+			const dx = ship.direction === "row";
+			const dy = ship.direction === "column";
+
+			
+			const startX = ship.x - 1;
+			const startY = ship.y - 1;
+			const endX = ship.x + ship.size * dx + dy;
+			const endY = ship.y + ship.size * dy + dx;
+
+			for (let y = startY; y <= endY; y++) {
+				for (let x = startX; x <= endX; x++) {
+					if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
+						const shot = new ShotView(x, y);
+						this.addShot(shot);
+					}
+				}
+			}
+		}
+
 		return true;
 	}
 
