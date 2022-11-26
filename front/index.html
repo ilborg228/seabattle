@@ -8,20 +8,53 @@
 	</head>
 	<body>
 		<div class="app">
-			<button onclick="playMusic()">Play Audio</button>
+			<input type="image" id="music-btn" onclick="playMusic()" class="audio-off-button" alt=" " />
+			<input type="image"  id="sfx-btn" onclick="onOffSfx()" class="sfx-button" alt=" " />
 
-			<button id="aboutButton">О программе</button>
+			<input type="image" style="float: right;" src="src/sprites/info.png" alt="Submit" />
+			<input type="image" id="aboutButton" style="float: right;" src="src/sprites/question.png" alt="Submit" />
+
 			<div id="modalWindow" class="modal">
 				<div class="modal-content">
 					<span class="close">&times;</span>
 					<p>
-						Выполнили:  
+						<center><b>Информация о разработчиках:</b></center>
+					</p>
+					<p>&nbsp;</p>
+					<center>
+						<p>
+							Лабораторный практикум по дисциплине: "Технологии программирования"  
+						</p>
+						<p>
+							Тема: Автоматизированная система «Игра «Морской бой»  
+						</p>
+					</center>
+					<p>&nbsp;</p>
+					<p>
+						<i>Разработчики:</i>  
 					</p>
 					<p>
-						Широких И.Г., Пивцаев М.М., Самсонов Я.И.
+						&nbsp;&nbsp;&nbsp;&nbsp;Студенты группы 6403-090301D
 					</p>
 					<p>
-						гр.6403
+						&nbsp;&nbsp;&nbsp;&nbsp;Широких И.Г.
+					</p>
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp;Пивцаев М.М.
+					</p>
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp;Самсонов Я.И.
+					</p>
+					<p>&nbsp;</p>
+					<p>
+						<i>Руководитель:</i>
+					</p>
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp;Зеленко Лариса Сергеевна
+					</p>
+					<p>&nbsp;</p>
+					<p>
+						<center>Самарский университет 2022</center>
 					</p>
 				</div>
 			</div>
@@ -65,7 +98,7 @@
 						</button>
 						<p>Загрузить расстановку из файла</p>
 						<input type="file" id="file-selector" multiple style="margin-bottom: 7px">
-						<label for="input-filename">Введите название расстановки</label>
+						<label for="input-filename">Введите название файла расстановки</label>
 						<input id="input-filename" type="text" style="width: 206px" value="placement">
 						<button class="app-action" data-action="download">
 							Сохранить файл расстановки

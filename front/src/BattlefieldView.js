@@ -111,6 +111,18 @@ class BattlefieldView extends Battlefield {
 			return false;
 		}
 
+		if (isSfxPlaying()) {
+			let fx = null;
+			if (this.checkShip(shot.x, shot.y)) {
+				fx = new Audio('attacked.wav');
+				
+			} else {
+				fx = new Audio('miss.wav');
+			}
+			fx.volume = 0.2;
+			fx.play();
+		}
+
 		this.polygon.append(shot.div);
 
 		const cell = this.cells[shot.y][shot.x];
