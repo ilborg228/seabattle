@@ -88,6 +88,7 @@ class PreparationScene extends Scene {
 		const fileSelector = document.getElementById('file-selector')
 		fileSelector.addEventListener('change', this.onChange)
 		fileSelector.onclick = ev => {ev.target.value = null}
+		this.setStartCord(player);
 	}
 
 	login() {
@@ -108,6 +109,9 @@ class PreparationScene extends Scene {
 		document
 			.querySelectorAll(".app-login")
 			.forEach((element) => element.classList.remove("hidden"))
+		document
+			.querySelectorAll(".battlefield-dock")
+			.forEach((element) => element.classList.add("hidden"))
 
 		document
 			.querySelector('[data-scene="preparation"]')
@@ -118,7 +122,9 @@ class PreparationScene extends Scene {
 		document
 			.querySelectorAll(".app-login")
 			.forEach((element) => element.classList.add("hidden"))
-
+		document
+			.querySelectorAll(".battlefield-dock")
+			.forEach((element) => element.classList.remove("hidden"))
 		document
 			.querySelector('[data-scene="preparation"]')
 			.classList.remove("hidden")
@@ -195,9 +201,16 @@ class PreparationScene extends Scene {
 				player.removeShip(ship);
 				player.addShip(ship, x, y);
 			} else {
-				ship.setDirection(this.oldDir, true);
-				player.removeShip(ship);
-				player.addShip(ship, this.oldX, this.oldY);
+				if (point.x >= 300 && point.x <= 500 && point.y >= 280 && point.y <= 500) {
+					console.log("of");
+					ship.setDirection("row", true);
+					player.removeShip(ship);
+					player.addShip(ship, ship.startX, ship.startY);
+				} else {
+					ship.setDirection(this.oldDir, true);
+					player.removeShip(ship);
+					player.addShip(ship, this.oldX, this.oldY);
+				}
 			}
 		}
 
