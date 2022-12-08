@@ -291,10 +291,10 @@ img {
 	z-index: 1;
 	margin: 15%, auto;
 	padding: 20px;
-	left: 40%;
-	top: 40%;
-	width: 20%;
-	height: 20%;
+	left: 30%;
+	top: 25%;
+	width: 40%;
+	height: 50%;
 	font-size: larger;
 }
 
@@ -303,4 +303,36 @@ img {
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
+}
+
+.audio-button {
+	width: 32px;
+	height: 32px;
+	background-image: url(sprites/music.png);
+	background-size : 100% 100%;
+	float: left;
+}
+
+.audio-off-button {
+	width: 32px;
+	height: 32px;
+	background-image: url(sprites/music-off.png);
+	background-size : 100% 100%;
+	float: left;
+}
+
+.sfx-button {
+	width: 32px;
+	height: 32px;
+	background-image: url(sprites/sfx.png);
+	background-size : 100% 100%;
+	float: left;
+}
+
+.sfx-off-button {
+	width: 32px;
+	height: 32px;
+	background-image: url(sprites/sfx-off.png);
+	background-size : 100% 100%;
+	float: left;
 }
